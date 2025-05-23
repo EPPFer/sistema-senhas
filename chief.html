@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<title>Área do Chefe - Login</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  #loginDiv, #chiefDiv { max-width: 400px; margin: auto; }
+  #chiefDiv { display: none; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 10px; border-bottom: 1px solid #ccc; cursor: pointer; }
+  li.urgent { background-color: #ffcccc; }
+</style>
+</head>
+<body>
+
+<div id="loginDiv">
+  <h2>Login do Chefe</h2>
+  <input type="password" id="passwordInput" placeholder="Digite a senha" />
+  <button onclick="loginChief()">Entrar</button>
+  <p id="loginError" style="color:red; display:none;">Senha incorreta!</p>
+</div>
+
+<div id="chiefDiv">
+  <h2>Fila de Atendimento</h2>
+  <ul id="queueListChief"></ul>
+</div>
+
+<script>
+  // Senha simples do chefe
+  const CHIEF_PASSWORD = "chefe123";
+
+  // Exemplo de fila (deve ser compartilhada via backend ou localStorage)
+  // Para sincronização real, precisa backend (ver explicação futura)
+  let queue = JSON.parse(localStorage.getItem('queueData')) || [];
+
+  function loginChief() {
+    const pass = document.getElementById('passwordInput').value;
+    if (pass === CHIEF_PASSWORD) {
+      document.getElementById('loginDiv').style.display = 'none';
+      document.getElementById('chiefDiv').style.display = 'block';
+      renderQueueForChief();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function renderQueueForChief() {
+    const list = document.getElementById('queueListChief');
+    list.innerHTML = '';
+    queue.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name} - Motivo: ${item.reason} - Prioridade: ${item.urgent ? 'URGENTE' : 'Normal'}`;
+      li.className = item.urgent ? 'urgent' : '';
+      li.onclick = () => callNext(index);
+      list.appendChild(li);
+    });
+  }
+
+  function callNext(index) {
+    if (queue.length === 0) {
+      alert('Não há atendimentos na fila');
+      return;
+    }
+    const called = queue.splice(index, 1)[0];
+    alert(`Chamando ${called.name} para atendimento.`);
+    saveQueue();
+    renderQueueForChief();
+    playSound();
+  }
+
+  // Simula som ao chamar
+  function playSound() {
+    const audio = new Audio('https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg');
+    audio.play();
+  }
+
+  // Função para salvar fila no localStorage
+  function saveQueue() {
+    localStorage.setItem('queueData', JSON.stringify(queue));
+  }
+
+  // Para o pedido dos colaboradores atualizarem a fila, também precisam salvar no localStorage
+  // (A sincronização real requer backend)
+
+</script>
+
+</body>
+</html>
