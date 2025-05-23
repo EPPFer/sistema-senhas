@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sistema de Senhas - Despacho Chefe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="login-screen">
+    <h2>Login</h2>
+    <input type="password" id="password-input" placeholder="Digite a senha de acesso" />
+    <button id="login-btn">Entrar</button>
+    <p id="login-error" style="color:red; display:none;">Senha incorreta</p>
+  </div>
+
+  <div id="app" style="display:none;">
+    <h1>Sistema de Senhas - Despacho</h1>
+
+    <div id="request-section">
+      <h3>Solicitar Atendimento</h3>
+      <input type="text" id="name" placeholder="Seu nome" />
+      <textarea id="reason" placeholder="Motivo do despacho"></textarea>
+      <label>
+        <input type="checkbox" id="urgent" />
+        Atendimento urgente
+      </label>
+      <input type="text" id="urgent-reason" placeholder="Justifique a urgência" style="display:none;" />
+      <button id="request-btn">Pedir senha</button>
+      <p id="request-message" style="color:green;"></p>
+    </div>
+
+    <hr />
+
+    <div id="queue-section">
+      <h3>Fila de Espera</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Motivo</th>
+            <th>Urgente</th>
+          </tr>
+        </thead>
+        <tbody id="queue-list"></tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <div id="chief-panel">
+      <h3>Painel do Chefe</h3>
+      <button id="call-next">Chamar próximo</button>
+      <p id="current-call"></p>
+      <button id="mark-attended" disabled>Marcar como atendido</button>
+    </div>
+
+  </div>
+
+  <audio id="new-request-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+  <audio id="call-sound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
